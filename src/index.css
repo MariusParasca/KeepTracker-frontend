@@ -11,6 +11,10 @@ body,
   height: 100%;
 }
 
+#root {
+  background: #eeeeee;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
