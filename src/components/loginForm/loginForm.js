@@ -13,10 +13,6 @@ const updateTextField = (func) => ({ target: { value } }) => {
   func(value);
 };
 
-// 0 -> 25 -> 50 -> 80 -> 110 -> 130 -> 145 -> 160 -> 170 -> 190 -> 205 -> 220 -> 230 -> 240 -> 250 -> 260 -> 270
-// -> 280 -> 290 -> 302 -> 315 -> 330 -> 340 -> 350 -> 360 -> 370 -> 380 -> 390 -> 400 -> 410 -> 420 -> 430 -> 440 -> 450
-// -> 460 -> 469 -> 480 -> 490 -> 501 -> 509
-
 const handleOnClickLogin = async (email, password) => {
   try {
     const response = await axiosAuthServer.post('login', {
