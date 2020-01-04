@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import Login from "./routes/login/login";
+import Login from 'routes/login/login';
 
 function App() {
   return (
