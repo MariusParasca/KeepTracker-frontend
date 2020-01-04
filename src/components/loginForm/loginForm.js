@@ -39,19 +39,37 @@ const handleIsEmailValid = (email, setIsEmailInvalid, setEmailHelperText) => {
   }
 };
 
+const handleIsPasswordValid = (password, setIsPasswordInvalid, setPasswordHelperText) => {
+  if (password) {
+    setIsPasswordInvalid(false);
+    setPasswordHelperText('');
+  } else {
+    setIsPasswordInvalid(true);
+    setPasswordHelperText("Password can't bet empty");
+  }
+};
+
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [isEmailInvalid, setIsEmailInvalid] = useState(false);
   const [emailHelperText, setEmailHelperText] = useState('');
   const [password, setPassword] = useState('');
+  const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
+  const [passwordHelperText, setPasswordHelperText] = useState('');
 
   const onClickLogin = useCallback(() => {
-    handleOnClickLogin(email, password);
-  }, [email, password]);
+    if (!isEmailInvalid && !isPasswordInvalid && password && email) {
+      handleOnClickLogin(email, password);
+    }
+  }, [email, password, isEmailInvalid, isPasswordInvalid]);
 
   const isEmailValid = useCallback(() => {
     handleIsEmailValid(email, setIsEmailInvalid, setEmailHelperText);
-  }, [email, setIsEmailInvalid, setEmailHelperText]);
+  }, [email]);
+
+  const isPasswordValid = useCallback(() => {
+    handleIsPasswordValid(password, setIsPasswordInvalid, setPasswordHelperText);
+  }, [password]);
 
   return (
     <div className={styles.loginFormContainer}>
@@ -78,8 +96,11 @@ const LoginForm = () => {
               type="password"
               value={password}
               onChange={updateTextField(setPassword)}
+              onBlur={isPasswordValid}
               variant="outlined"
               placeholder="Password"
+              error={isPasswordInvalid}
+              helperText={passwordHelperText}
             />
           </div>
         </form>
@@ -92,7 +113,5 @@ const LoginForm = () => {
     </div>
   );
 };
-
-LoginForm.propTypes = {};
 
 export default LoginForm;
