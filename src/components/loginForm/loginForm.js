@@ -13,7 +13,7 @@ const updateTextField = (func) => ({ target: { value } }) => {
   func(value);
 };
 
-const handleOnClickLogin = async (email, password) => {
+const handleOnClickLogin = async (email, password, setBackendErrorMessage) => {
   try {
     const response = await axiosAuthServer.post('login', {
       email,
@@ -23,9 +23,11 @@ const handleOnClickLogin = async (email, password) => {
     const refreshTokenData = parseJwt(response.data.refreshToken);
     Cookies.set('accessToken', accessTokenData, { expires: accessTokenData.exp });
     Cookies.set('refreshToken', refreshTokenData);
-    console.log('coockie', Cookies.get('accessToken'));
+    console.log('accessTokenData', accessTokenData);
+    setBackendErrorMessage('');
   } catch (err) {
-    console.log('err', err);
+    console.log('err', err.response);
+    setBackendErrorMessage(err.response.data.message);
   }
 };
 
@@ -56,10 +58,11 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [isPasswordInvalid, setIsPasswordInvalid] = useState(false);
   const [passwordHelperText, setPasswordHelperText] = useState('');
+  const [backendErrorMessage, setBackendErrorMessage] = useState('');
 
   const onClickLogin = useCallback(() => {
     if (!isEmailInvalid && !isPasswordInvalid && password && email) {
-      handleOnClickLogin(email, password);
+      handleOnClickLogin(email, password, setBackendErrorMessage);
     }
   }, [email, password, isEmailInvalid, isPasswordInvalid]);
 
@@ -75,7 +78,10 @@ const LoginForm = () => {
     <div className={styles.loginFormContainer}>
       <div className={styles.contentContainer}>
         <Typography align="center" variant="h5">
-          Welcome
+          Welcome,
+        </Typography>
+        <Typography align="center" variant="body2">
+          Please login to Get Access
         </Typography>
         <form>
           <div className={styles.inputContainer}>
@@ -104,6 +110,11 @@ const LoginForm = () => {
             />
           </div>
         </form>
+        <div>
+          <Typography align="center" variant="subtitle2" color="error">
+            {backendErrorMessage /* TO DO: overflow of bigger text fix */}
+          </Typography>
+        </div>
         <div className={styles.buttonContainer}>
           <Button variant="contained" color="primary" onClick={onClickLogin}>
             Login
