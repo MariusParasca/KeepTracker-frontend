@@ -86,6 +86,7 @@ const LoginForm = () => {
         <form>
           <div className={styles.inputContainer}>
             <TextField
+              label="Email"
               type="email"
               value={email}
               onChange={updateTextField(setEmail)}
@@ -99,6 +100,7 @@ const LoginForm = () => {
           </div>
           <div className={styles.inputContainer}>
             <TextField
+              label="Password"
               type="password"
               value={password}
               onChange={updateTextField(setPassword)}
@@ -110,11 +112,9 @@ const LoginForm = () => {
             />
           </div>
         </form>
-        <div>
-          <Typography align="center" variant="subtitle2" color="error">
-            {backendErrorMessage /* TO DO: overflow of bigger text fix */}
-          </Typography>
-        </div>
+        <Typography align="center" variant="subtitle2" color="error" className={styles.backendError}>
+          {backendErrorMessage /* TO DO: overflow of bigger text fix */}
+        </Typography>
         <div className={styles.buttonContainer}>
           <Button variant="contained" color="primary" onClick={onClickLogin}>
             Login
