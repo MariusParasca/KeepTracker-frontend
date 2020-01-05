@@ -20,13 +20,10 @@ const handleOnClickLogin = async (email, password, setBackendErrorMessage) => {
       password,
     });
     const accessTokenData = parseJwt(response.data.accessToken);
-    const refreshTokenData = parseJwt(response.data.refreshToken);
-    Cookies.set('accessToken', accessTokenData, { expires: accessTokenData.exp });
-    Cookies.set('refreshToken', refreshTokenData);
-    console.log('accessTokenData', accessTokenData);
+    Cookies.set('accessToken', response.data.accessToken, { expires: accessTokenData.exp });
+    Cookies.set('refreshToken', response.data.refreshToken);
     setBackendErrorMessage('');
   } catch (err) {
-    console.log('err', err.response);
     setBackendErrorMessage(err.response.data.message);
   }
 };
