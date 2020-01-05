@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Cookies from 'js-cookie';
+import { withRouter } from 'react-router-dom';
 
 import styles from './styles.module.css';
 import axiosAuthServer from 'shared/axios/authServer';
@@ -13,16 +14,18 @@ const updateTextField = (func) => ({ target: { value } }) => {
   func(value);
 };
 
-const handleOnClickLogin = async (email, password, setBackendErrorMessage) => {
+const handleOnClickLogin = async (email, password, setBackendErrorMessage, history) => {
   try {
     const response = await axiosAuthServer.post('login', {
       email,
       password,
     });
+    console.log(response);
     const accessTokenData = parseJwt(response.data.accessToken);
     Cookies.set('accessToken', response.data.accessToken, { expires: accessTokenData.exp });
     Cookies.set('refreshToken', response.data.refreshToken);
-    setBackendErrorMessage('');
+    // setBackendErrorMessage('');
+    history.push('/document');
   } catch (err) {
     setBackendErrorMessage(err.response.data.message);
   }
@@ -48,7 +51,7 @@ const handleIsPasswordValid = (password, setIsPasswordInvalid, setPasswordHelper
   }
 };
 
-const LoginForm = () => {
+const LoginForm = (props) => {
   const [email, setEmail] = useState('');
   const [isEmailInvalid, setIsEmailInvalid] = useState(false);
   const [emailHelperText, setEmailHelperText] = useState('');
@@ -59,9 +62,9 @@ const LoginForm = () => {
 
   const onClickLogin = useCallback(() => {
     if (!isEmailInvalid && !isPasswordInvalid && password && email) {
-      handleOnClickLogin(email, password, setBackendErrorMessage);
+      handleOnClickLogin(email, password, setBackendErrorMessage, props.history);
     }
-  }, [email, password, isEmailInvalid, isPasswordInvalid]);
+  }, [email, password, isEmailInvalid, isPasswordInvalid, props.history]);
 
   const isEmailValid = useCallback(() => {
     handleIsEmailValid(email, setIsEmailInvalid, setEmailHelperText);
@@ -122,4 +125,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default withRouter(LoginForm);
