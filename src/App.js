@@ -1,24 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Routes from 'routes';
+import { ThemeProvider } from '@material-ui/core';
 
-import Login from 'routes/login/login';
-import Document from 'routes/document/document';
-import WithAuth from 'hoc/withAuth';
+import theme from './theme';
 
 function App() {
   return (
-    <Router>
+    <ThemeProvider theme={theme}>
       <div className="App">
-        <Switch>
-          <Route path="/" exact>
-            <Login />
-          </Route>
-          <Route path="/document">
-            <WithAuth component={Document} />
-          </Route>
-        </Switch>
+        <Routes />
       </div>
-    </Router>
+    </ThemeProvider>
   );
 }
 

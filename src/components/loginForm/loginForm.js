@@ -20,7 +20,6 @@ const handleOnClickLogin = async (email, password, setBackendErrorMessage, histo
       email,
       password,
     });
-    console.log(response);
     const accessTokenData = parseJwt(response.data.accessToken);
     Cookies.set('accessToken', response.data.accessToken, { expires: accessTokenData.exp });
     Cookies.set('refreshToken', response.data.refreshToken);
